@@ -19,7 +19,7 @@ const RentalIntelligenceCard = ({
 
   const handleAnalyze = () => {
     onAnalyze?.();
-    navigate("/wealth-projection");
+    navigate("/income-analysis");
   };
 
   return (

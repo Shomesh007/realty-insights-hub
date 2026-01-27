@@ -79,7 +79,7 @@ const Home = () => {
 
             {/* CTA Button */}
             <Button
-              onClick={() => navigate("/income-analysis")}
+              onClick={() => navigate("/dashboard")}
               className="group h-12 px-8 bg-secondary text-secondary-foreground text-base font-bold shadow-xl shadow-secondary/25 hover:shadow-secondary/40 hover:-translate-y-0.5 transition-all mt-4"
             >
               <span>Initiate AI Analysis</span>
