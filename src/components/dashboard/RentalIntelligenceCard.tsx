@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Brain, BarChart3, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -5,15 +6,22 @@ interface RentalIntelligenceCardProps {
   efficiency: number;
   monthlyIncome: number;
   assetScore: string;
-  onAnalyze: () => void;
+  onAnalyze?: () => void;
 }
 
 const RentalIntelligenceCard = ({ 
-  efficiency = 82, 
+  efficiency = 82,
   monthlyIncome = 18450, 
   assetScore = "A+",
   onAnalyze 
 }: RentalIntelligenceCardProps) => {
+  const navigate = useNavigate();
+
+  const handleAnalyze = () => {
+    onAnalyze?.();
+    navigate("/income-analysis");
+  };
+
   return (
     <div className="lg:col-span-8 bg-beige rounded-xl p-5 relative overflow-hidden shadow-soft">
       {/* Gradient overlay */}
@@ -36,7 +44,7 @@ const RentalIntelligenceCard = ({
           </div>
           <div className="mt-3">
             <Button 
-              onClick={onAnalyze}
+              onClick={handleAnalyze}
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold py-1.5 px-4 rounded-lg text-xs inline-flex items-center gap-1.5 shadow hover:shadow-md transform hover:-translate-y-0.5 transition-all"
             >
               Analyze Income
