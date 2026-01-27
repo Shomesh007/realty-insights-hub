@@ -38,7 +38,7 @@ const IncomeAnalysis = () => {
     });
     
     setIsSubmitting(false);
-    navigate("/");
+    navigate("/wealth-projection");
   };
 
   return (
