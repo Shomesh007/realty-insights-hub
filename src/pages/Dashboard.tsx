@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import RentalIntelligenceCard from "@/components/dashboard/RentalIntelligenceCard";
 import MortgageCalculator from "@/components/dashboard/MortgageCalculator";
@@ -7,6 +10,7 @@ import CapitalAppreciationChart from "@/components/dashboard/CapitalAppreciation
 import RiskEstimator from "@/components/dashboard/RiskEstimator";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [efficiency] = useState(82);
   const [monthlyIncome] = useState(18450);
   const [assetScore] = useState("A+");
@@ -36,6 +40,16 @@ const Index = () => {
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/")}
+          className="mb-4 gap-2 text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Button>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Row 1: Rental Intelligence + Mortgage Calculator */}
           <RentalIntelligenceCard
