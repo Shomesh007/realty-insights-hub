@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import IncomeAnalysis from "./pages/IncomeAnalysis";
 import WealthProjection from "./pages/WealthProjection";
 import EMICalculator from "./pages/EMICalculator";
+import EMIResults from "./pages/EMIResults";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/income-analysis" element={<IncomeAnalysis />} />
           <Route path="/wealth-projection" element={<WealthProjection />} />
           <Route path="/emi-calculator" element={<EMICalculator />} />
+          <Route path="/emi-results" element={<EMIResults />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

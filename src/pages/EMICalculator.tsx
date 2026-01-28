@@ -27,6 +27,18 @@ const EMICalculator = () => {
     });
     
     setIsSubmitting(false);
+    
+    // Navigate to results page with calculation data
+    navigate('/emi-results', {
+      state: {
+        propertyValue: parseFloat(propertyValue) || 700000,
+        age: parseInt(age) || 35,
+        residentStatus,
+        monthlyIncome: parseFloat(monthlyIncome) || 15000,
+        currency,
+        interestRate: parseFloat(interestRate) || 3.2,
+      }
+    });
   };
 
   return (
