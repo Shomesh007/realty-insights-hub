@@ -41,17 +41,17 @@ Lyka Connect (LykaRealty) is a premium, AI-driven platform designed to provide i
 
 ### Deployment
 
-This project is configured for deployment on **Netlify**.
+This project is configured for deployment on **Vercel**.
 
-1.  Connect your repository to Netlify.
-2.  Build settings:
+1.  Connect your repository to Vercel.
+2.  Vercel will automatically detect the Vite preset.
     - **Build command**: `npm run build`
-    - **Publish directory**: `dist`
-3.  Ensure environment variables are configured in the Netlify dashboard.
+    - **Output directory**: `dist`
+3.  Ensure environment variables are configured in the Vercel Project Settings.
 
 ## Deployment Config
 
-- `netlify.toml`: Handles single-page application routing.
+- `vercel.json`: Handles single-page application routing natively in Vercel.
 - `robots.txt`: Optimized for SEO and AI/LLM scrapers.
 - `favicon.png`: Premium custom branding.
 
