@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Diamond, TrendingUp, ArrowRight, PieChart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Header from "@/components/layout/Header";
 
+const CANONICAL_URL = "https://www.lykaconnect.com/";
+
 const Home = () => {
   const navigate = useNavigate();
   const [riskValue, setRiskValue] = useState([75]);
+
+  useEffect(() => {
+    // Ensure canonical link exists in <head>
+    let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement | null;
+    if (!link) {
+      link = document.createElement("link");
+      link.setAttribute("rel", "canonical");
+      document.head.appendChild(link);
+    }
+    link.setAttribute("href", CANONICAL_URL);
+  }, []);
 
   const getRiskLabel = () => {
     if (riskValue[0] < 33) return "Conservative";
@@ -45,7 +58,6 @@ const Home = () => {
             <p className="text-lg text-muted-foreground max-w-xl">
               Harness institutional-grade AI with Lyka Connect (formerly LykaRealty) to predict rental yields, capital appreciation, and ROI across Dubai's premier districts.
             </p>
-
 
             {/* CTA Button */}
             <Button

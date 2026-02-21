@@ -1,5 +1,13 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Sitemap: https://www.lykaconnect.com/sitemap.xml
 
+# AI Crawler Directives
+User-agent: GPTBot
+User-agent: Google-Extended
+User-agent: ClaudeBot
+User-agent: GeminiBot
+Disallow:
+Allow: /
 Sitemap: https://www.lykaconnect.com/sitemap.xml
