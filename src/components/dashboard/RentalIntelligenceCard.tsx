@@ -9,11 +9,11 @@ interface RentalIntelligenceCardProps {
   onAnalyze?: () => void;
 }
 
-const RentalIntelligenceCard = ({ 
-  efficiency = 82,
-  monthlyIncome = 18450, 
-  assetScore = "A+",
-  onAnalyze 
+const RentalIntelligenceCard = ({
+  efficiency = 0,
+  monthlyIncome = 0,
+  assetScore = "—",
+  onAnalyze
 }: RentalIntelligenceCardProps) => {
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ const RentalIntelligenceCard = ({
     <div className="lg:col-span-8 bg-beige rounded-xl p-5 relative overflow-hidden shadow-soft">
       {/* Gradient overlay */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-card/40 to-transparent pointer-events-none" />
-      
+
       <div className="relative z-10 flex flex-col md:flex-row justify-between h-full gap-3">
         {/* Left content */}
         <div className="flex flex-col justify-between flex-1">
@@ -36,14 +36,14 @@ const RentalIntelligenceCard = ({
               Rental Intelligence
             </span>
             <h1 className="text-xl md:text-2xl font-bold text-foreground mb-1 leading-tight">
-              Tamil Millionaire <br/>Journey
+              Tamil Millionaire <br />Journey
             </h1>
             <p className="text-muted-foreground text-xs max-w-sm leading-relaxed">
               Unlock AI-powered insights for rental income optimization and long-term yield forecasting.
             </p>
           </div>
           <div className="mt-3">
-            <Button 
+            <Button
               onClick={handleAnalyze}
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold py-1.5 px-4 rounded-lg text-xs inline-flex items-center gap-1.5 shadow hover:shadow-md transform hover:-translate-y-0.5 transition-all"
             >
@@ -57,9 +57,10 @@ const RentalIntelligenceCard = ({
         <div className="flex flex-col items-center justify-center md:items-end gap-3 md:w-auto">
           {/* Efficiency gauge */}
           <div className="relative w-20 h-20 flex items-center justify-center">
-            <div 
-              className="absolute inset-0 rounded-full conic-gradient-82"
-              style={{ 
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: `conic-gradient(hsl(var(--primary)) 0% ${efficiency}%, hsl(var(--border)) ${efficiency}% 100%)`,
                 maskImage: 'radial-gradient(transparent 62%, black 63%)',
                 WebkitMaskImage: 'radial-gradient(transparent 62%, black 63%)'
               }}

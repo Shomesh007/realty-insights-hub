@@ -59,6 +59,15 @@
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
+
+  html {
+    scroll-behavior: auto !important;
+    overscroll-behavior-x: auto;
+  }
+
+  body {
+    overscroll-behavior-x: auto;
+  }
 }
 
 /* Custom slider styles */

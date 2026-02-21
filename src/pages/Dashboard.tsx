@@ -1,45 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import RentalIntelligenceCard from "@/components/dashboard/RentalIntelligenceCard";
 import MortgageCalculator from "@/components/dashboard/MortgageCalculator";
 import CapitalAppreciationChart from "@/components/dashboard/CapitalAppreciationChart";
 import RiskEstimator from "@/components/dashboard/RiskEstimator";
+import { getDashboardData, saveDashboardData } from "@/utils/dashboardStore";
 
 const Index = () => {
   const navigate = useNavigate();
-  const [efficiency] = useState(82);
-  const [monthlyIncome] = useState(18450);
-  const [assetScore] = useState("A+");
-  const [loanToValue, setLoanToValue] = useState(80);
+  const [data, setData] = useState(getDashboardData());
 
   const handleAnalyzeIncome = () => {
-    toast.success("Income analysis started", {
-      description: "AI is processing your rental income data...",
-    });
-    // Future: trigger AI analysis
+    navigate("/income-analysis");
   };
 
+
   const handleEMICalculate = (emi: number) => {
-    toast.success(`Monthly EMI: $${emi.toLocaleString()}`, {
-      description: "Calculation saved to your dashboard",
-    });
+    // EMI calculated and handled by the component
+    setData(getDashboardData());
   };
 
   const handleRiskCalculate = (risk: { level: string; score: number }) => {
-    toast.info(`Risk Level: ${risk.level}`, {
-      description: `Overall score: ${risk.score}/100`,
+    saveDashboardData({
+      riskLevel: risk.level,
+      riskScore: risk.score
     });
+    setData(getDashboardData());
   };
+
+  useEffect(() => {
+    // Refresh data if needed, or just rely on state
+    setData(getDashboardData());
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-32 md:pb-8">
         {/* Back Button */}
         <Button
           variant="ghost"
@@ -53,18 +55,22 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Row 1: Rental Intelligence + Mortgage Calculator */}
           <RentalIntelligenceCard
-            efficiency={efficiency}
-            monthlyIncome={monthlyIncome}
-            assetScore={assetScore}
+            efficiency={data.efficiency}
+            monthlyIncome={data.monthlyIncome}
+            assetScore={data.assetScore}
             onAnalyze={handleAnalyzeIncome}
           />
-          <MortgageCalculator onCalculate={handleEMICalculate} />
+          <MortgageCalculator
+            loanAmount={data.loanAmount ? [data.loanAmount] : undefined}
+            downPaymentPercent={data.downPayment ? [data.downPayment] : undefined}
+            onCalculate={handleEMICalculate}
+          />
 
           {/* Row 2: Capital Appreciation + Risk Estimator */}
-          <CapitalAppreciationChart growthPercentage={32.5} />
-          <RiskEstimator 
-            loanToValue={loanToValue} 
-            onCalculate={handleRiskCalculate} 
+          <CapitalAppreciationChart growthPercentage={data.growthPercentage || 32.5} />
+          <RiskEstimator
+            loanToValue={data.loanAmount && data.downPayment ? 100 - data.downPayment : 80}
+            onCalculate={handleRiskCalculate}
           />
         </div>
       </main>

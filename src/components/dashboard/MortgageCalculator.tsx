@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,12 +6,26 @@ import { Slider } from "@/components/ui/slider";
 
 interface MortgageCalculatorProps {
   onCalculate?: (emi: number) => void;
+  loanAmount?: number[];
+  downPaymentPercent?: number[];
 }
 
-const MortgageCalculator = ({ onCalculate }: MortgageCalculatorProps) => {
+const MortgageCalculator = ({
+  onCalculate,
+  loanAmount: initialLoanAmount = [1200000],
+  downPaymentPercent: initialDownPaymentPercent = [20]
+}: MortgageCalculatorProps) => {
   const navigate = useNavigate();
-  const [loanAmount, setLoanAmount] = useState([1200000]);
-  const [downPaymentPercent, setDownPaymentPercent] = useState([20]);
+  const [loanAmount, setLoanAmount] = useState(initialLoanAmount);
+  const [downPaymentPercent, setDownPaymentPercent] = useState(initialDownPaymentPercent);
+
+  useEffect(() => {
+    if (initialLoanAmount) setLoanAmount(initialLoanAmount);
+  }, [initialLoanAmount]);
+
+  useEffect(() => {
+    if (initialDownPaymentPercent) setDownPaymentPercent(initialDownPaymentPercent);
+  }, [initialDownPaymentPercent]);
 
   const maxLoanAmount = 2000000;
 
@@ -22,9 +36,9 @@ const MortgageCalculator = ({ onCalculate }: MortgageCalculatorProps) => {
     const loanPrincipal = principal - downPayment;
     const monthlyRate = 7.5 / 12 / 100;
     const tenureMonths = 20 * 12;
-    const emi = loanPrincipal * monthlyRate * Math.pow(1 + monthlyRate, tenureMonths) / 
-                (Math.pow(1 + monthlyRate, tenureMonths) - 1);
-    
+    const emi = loanPrincipal * monthlyRate * Math.pow(1 + monthlyRate, tenureMonths) /
+      (Math.pow(1 + monthlyRate, tenureMonths) - 1);
+
     onCalculate?.(Math.round(emi));
     navigate("/emi-calculator");
   };
@@ -48,7 +62,7 @@ const MortgageCalculator = ({ onCalculate }: MortgageCalculatorProps) => {
           </span>
         </div>
         <h2 className="text-base font-bold text-foreground mb-4">Mortgage & EMI</h2>
-        
+
         {/* Loan Amount Slider */}
         <div className="mb-4">
           <div className="flex justify-between text-[9px] font-bold uppercase text-muted-foreground mb-2">
@@ -82,7 +96,7 @@ const MortgageCalculator = ({ onCalculate }: MortgageCalculatorProps) => {
         </div>
       </div>
 
-      <Button 
+      <Button
         onClick={handleCalculateEMI}
         className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold py-2 px-4 rounded-lg text-xs shadow-sm"
       >

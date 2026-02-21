@@ -1,10 +1,14 @@
-import { AreaChart, Area, XAxis, ResponsiveContainer, ReferenceDot } from "recharts";
+import { AreaChart, Area, XAxis, ResponsiveContainer } from "recharts";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 
 interface CapitalAppreciationChartProps {
   growthPercentage?: number;
 }
 
-const CapitalAppreciationChart = ({ growthPercentage = 32.5 }: CapitalAppreciationChartProps) => {
+const CapitalAppreciationChart = ({ growthPercentage = 0 }: CapitalAppreciationChartProps) => {
+  const navigate = useNavigate();
   const data = [
     { year: "2023", value: 100 },
     { year: "2024", value: 108 },
@@ -15,7 +19,7 @@ const CapitalAppreciationChart = ({ growthPercentage = 32.5 }: CapitalAppreciati
   ];
 
   return (
-    <div className="lg:col-span-8 bg-card rounded-xl p-5 shadow-soft border border-border flex flex-col h-[280px]">
+    <div className="lg:col-span-8 bg-card rounded-xl p-5 shadow-soft border border-border flex flex-col min-h-[280px] lg:h-[280px]">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-start justify-between mb-2 gap-2">
         <div className="flex flex-col gap-1">
@@ -29,14 +33,26 @@ const CapitalAppreciationChart = ({ growthPercentage = 32.5 }: CapitalAppreciati
             Predictive modeling based on upcoming Dubai infrastructure projects.
           </p>
         </div>
-        <div className="text-right">
-          <p className="text-4xl font-bold text-primary tracking-tight leading-none">+{growthPercentage}%</p>
-          <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-1">5-Year Growth Projection</p>
+        <div className="flex flex-col items-end gap-2 text-right">
+          <div>
+            <p className="text-2xl md:text-4xl font-bold text-primary tracking-tight leading-none">+{growthPercentage}%</p>
+            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-1">5-Year Growth Projection</p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/capital-appreciation-estimator")}
+            className="h-8 px-3 text-[10px] font-bold uppercase tracking-wider gap-1.5 border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all"
+          >
+            <Sparkles className="h-3 w-3 text-secondary" />
+            Detailed AI Prediction
+          </Button>
         </div>
       </div>
 
       {/* Chart */}
       <div className="relative flex-1 w-full mt-2">
+
         {/* Grid lines */}
         <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-6 pt-4">
           <div className="w-full border-t border-dashed border-border" />
@@ -55,8 +71,8 @@ const CapitalAppreciationChart = ({ growthPercentage = 32.5 }: CapitalAppreciati
                 <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis 
-              dataKey="year" 
+            <XAxis
+              dataKey="year"
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 9, fontWeight: 700, fill: 'hsl(var(--muted-foreground))' }}

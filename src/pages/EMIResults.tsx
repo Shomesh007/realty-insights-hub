@@ -47,10 +47,11 @@ interface EMIResultsProps {
   amortizationData?: AmortizationRow[];
 }
 
+
 const EMIResults = () => {
   const location = useLocation();
   const inputs = location.state as CalculatorInputs | null;
-  
+
   // Calculate mortgage values based on inputs
   const calculateMortgageDetails = () => {
     if (!inputs) {
@@ -78,37 +79,37 @@ const EMIResults = () => {
     const downPaymentPercent = 0.2; // 20% minimum
     const downPayment = Math.round(propertyValue * downPaymentPercent);
     const mortgageAmount = propertyValue - downPayment;
-    
+
     // Calculate upfront cash (DLD 4% + agent fees 2%)
     const dldFees = propertyValue * 0.04;
     const agentFees = propertyValue * 0.02;
     const upfrontCashMin = Math.round(dldFees);
     const upfrontCashMax = Math.round(dldFees + agentFees);
-    
+
     // Calculate EMI
     const tenure = 25; // years
     const monthlyRate = inputs.interestRate / 100 / 12;
     const numPayments = tenure * 12;
-    const monthlyEMI = (mortgageAmount * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
-                       (Math.pow(1 + monthlyRate, numPayments) - 1);
-    
+    const monthlyEMI = (mortgageAmount * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
+      (Math.pow(1 + monthlyRate, numPayments) - 1);
+
     // Calculate total interest and principal percentages
     const totalPayment = monthlyEMI * numPayments;
     const totalInterest = totalPayment - mortgageAmount;
     const principalPercentage = Math.round((mortgageAmount / totalPayment) * 100);
     const interestPercentage = Math.round((totalInterest / totalPayment) * 100);
-    
+
     // Calculate amortization for first 2 months and month 24
     const calculateAmortization = (monthNum: number) => {
-      const remainingBalance = monthNum === 1 
-        ? mortgageAmount 
-        : mortgageAmount * (Math.pow(1 + monthlyRate, numPayments) - Math.pow(1 + monthlyRate, monthNum - 1)) / 
-          (Math.pow(1 + monthlyRate, numPayments) - 1);
-      
+      const remainingBalance = monthNum === 1
+        ? mortgageAmount
+        : mortgageAmount * (Math.pow(1 + monthlyRate, numPayments) - Math.pow(1 + monthlyRate, monthNum - 1)) /
+        (Math.pow(1 + monthlyRate, numPayments) - 1);
+
       const interest = remainingBalance * monthlyRate;
       const principal = monthlyEMI - interest;
       const balance = remainingBalance - principal;
-      
+
       return {
         month: monthNum,
         principal: Math.round(principal * 100) / 100,
@@ -117,7 +118,7 @@ const EMIResults = () => {
         monthlyTotal: Math.round(monthlyEMI * 100) / 100,
       };
     };
-    
+
     return {
       propertyValue,
       mortgageAmount: Math.round(mortgageAmount),
@@ -150,22 +151,6 @@ const EMIResults = () => {
     amortizationData,
   } = calculateMortgageDetails();
 
-const EMIResults = ({
-  mortgageAmount = 699999,
-  downPayment = 140000,
-  upfrontCashMin = 42000,
-  upfrontCashMax = 56000,
-  monthlyEMI = 3818.43,
-  interestRate = 3.2,
-  tenure = 25,
-  principalPercentage = 73,
-  interestPercentage = 27,
-  amortizationData = [
-    { month: 1, principal: 1951.76, interest: 1866.67, balance: 698047.24, monthlyTotal: 3818.43 },
-    { month: 2, principal: 1956.97, interest: 1861.46, balance: 696090.27, monthlyTotal: 3818.43 },
-    { month: 24, principal: 2074.88, interest: 1743.55, balance: 651756.24, monthlyTotal: 3818.43 },
-  ],
-}: EMIResultsProps) => {
   const formatCurrency = (amount: number) => {
     return `AED ${amount.toLocaleString('en-AE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
@@ -184,7 +169,7 @@ const EMIResults = ({
   return (
     <div className="min-h-screen bg-white">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 md:pb-12">
         {/* Back Navigation */}
         <div className="mb-6">
           <Link
@@ -447,45 +432,45 @@ const EMIResults = ({
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-primary/5 text-primary text-[9px] uppercase tracking-widest font-extrabold">
-                    <th className="px-6 py-3">Month</th>
-                    <th className="px-6 py-3">Principal (AED)</th>
-                    <th className="px-6 py-3">Interest (AED)</th>
-                    <th className="px-6 py-3">Balance (AED)</th>
-                    <th className="px-6 py-3">Monthly Total</th>
+                    <th className="px-3 md:px-6 py-3">Month</th>
+                    <th className="px-3 md:px-6 py-3">Principal (AED)</th>
+                    <th className="px-3 md:px-6 py-3">Interest (AED)</th>
+                    <th className="px-3 md:px-6 py-3">Balance (AED)</th>
+                    <th className="px-3 md:px-6 py-3">Monthly Total</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-[12px]">
                   <tr className="hover:bg-white/60 transition-colors">
-                    <td className="px-6 py-3 font-bold text-gray-900">
+                    <td className="px-3 md:px-6 py-3 font-bold text-gray-900">
                       Month {amortizationData[0].month}
                     </td>
-                    <td className="px-6 py-3 text-gray-600">
+                    <td className="px-3 md:px-6 py-3 text-gray-600">
                       {formatCurrency(amortizationData[0].principal)}
                     </td>
-                    <td className="px-6 py-3 text-gray-600">
+                    <td className="px-3 md:px-6 py-3 text-gray-600">
                       {formatCurrency(amortizationData[0].interest)}
                     </td>
-                    <td className="px-6 py-3 font-semibold text-primary">
+                    <td className="px-3 md:px-6 py-3 font-semibold text-primary">
                       {formatCurrency(amortizationData[0].balance)}
                     </td>
-                    <td className="px-6 py-3 font-extrabold text-gray-900">
+                    <td className="px-3 md:px-6 py-3 font-extrabold text-gray-900">
                       {formatCurrency(amortizationData[0].monthlyTotal)}
                     </td>
                   </tr>
                   <tr className="hover:bg-white/60 transition-colors">
-                    <td className="px-6 py-3 font-bold text-gray-900">
+                    <td className="px-3 md:px-6 py-3 font-bold text-gray-900">
                       Month {amortizationData[1].month}
                     </td>
-                    <td className="px-6 py-3 text-gray-600">
+                    <td className="px-3 md:px-6 py-3 text-gray-600">
                       {formatCurrency(amortizationData[1].principal)}
                     </td>
-                    <td className="px-6 py-3 text-gray-600">
+                    <td className="px-3 md:px-6 py-3 text-gray-600">
                       {formatCurrency(amortizationData[1].interest)}
                     </td>
-                    <td className="px-6 py-3 font-semibold text-primary">
+                    <td className="px-3 md:px-6 py-3 font-semibold text-primary">
                       {formatCurrency(amortizationData[1].balance)}
                     </td>
-                    <td className="px-6 py-3 font-extrabold text-gray-900">
+                    <td className="px-3 md:px-6 py-3 font-extrabold text-gray-900">
                       {formatCurrency(amortizationData[1].monthlyTotal)}
                     </td>
                   </tr>
@@ -498,19 +483,19 @@ const EMIResults = ({
                     </td>
                   </tr>
                   <tr className="hover:bg-white/60 transition-colors">
-                    <td className="px-6 py-3 font-bold text-gray-900">
+                    <td className="px-3 md:px-6 py-3 font-bold text-gray-900">
                       Month {amortizationData[2].month}
                     </td>
-                    <td className="px-6 py-3 text-gray-600">
+                    <td className="px-3 md:px-6 py-3 text-gray-600">
                       {formatCurrency(amortizationData[2].principal)}
                     </td>
-                    <td className="px-6 py-3 text-gray-600">
+                    <td className="px-3 md:px-6 py-3 text-gray-600">
                       {formatCurrency(amortizationData[2].interest)}
                     </td>
-                    <td className="px-6 py-3 font-semibold text-primary">
+                    <td className="px-3 md:px-6 py-3 font-semibold text-primary">
                       {formatCurrency(amortizationData[2].balance)}
                     </td>
-                    <td className="px-6 py-3 font-extrabold text-gray-900">
+                    <td className="px-3 md:px-6 py-3 font-extrabold text-gray-900">
                       {formatCurrency(amortizationData[2].monthlyTotal)}
                     </td>
                   </tr>

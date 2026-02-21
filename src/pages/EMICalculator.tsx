@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Diamond, Home, Calendar, Globe, Wallet, Percent, ArrowRight, Bell, User } from "lucide-react";
+import { Diamond, Home, Calendar, Globe, Wallet, Percent, ArrowRight, Bell, User, Menu, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+
+import { saveDashboardData } from "@/utils/dashboardStore";
+import Header from "@/components/layout/Header";
 
 const EMICalculator = () => {
   const navigate = useNavigate();
@@ -18,68 +20,40 @@ const EMICalculator = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate calculation
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    toast.success("Mortgage Plan Generated!", {
-      description: "Your personalized mortgage strategy is ready.",
+
+    const propVal = parseFloat(propertyValue) || 700000;
+    const rate = parseFloat(interestRate) || 3.2;
+    const downPaymentPercent = 20; // Default
+    const loanAmount = propVal * (1 - downPaymentPercent / 100);
+
+    // Save results to dashboard store
+    saveDashboardData({
+      loanAmount,
+      downPayment: downPaymentPercent
     });
-    
+
+
+
     setIsSubmitting(false);
-    
+
     // Navigate to results page with calculation data
     navigate('/emi-results', {
       state: {
-        propertyValue: parseFloat(propertyValue) || 700000,
+        propertyValue: propVal,
         age: parseInt(age) || 35,
         residentStatus,
         monthlyIncome: parseFloat(monthlyIncome) || 15000,
         currency,
-        interestRate: parseFloat(interestRate) || 3.2,
+        interestRate: rate,
       }
     });
   };
 
   return (
     <div className="min-h-screen bg-card text-foreground font-sans antialiased">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border h-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-          <div className="flex justify-between h-full items-center">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <div className="bg-primary text-primary-foreground p-1.5 rounded-lg flex items-center justify-center shadow-md">
-                <Diamond className="h-5 w-5" />
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="font-bold text-lg tracking-tight text-foreground">LykaRealty</span>
-                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">AI Intelligence</span>
-              </div>
-            </Link>
+      <Header />
 
-            {/* Nav Links */}
-            <div className="hidden md:flex space-x-8">
-              <span className="text-foreground font-bold border-b-2 border-secondary pb-1 text-xs uppercase tracking-widest cursor-default">Calculator</span>
-              <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors text-xs uppercase tracking-widest">Dashboard</Link>
-              <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-xs uppercase tracking-widest">Market Insights</Link>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center gap-4">
-              <button className="p-2 rounded-full bg-muted hover:bg-muted/80 transition-colors text-muted-foreground">
-                <Bell className="h-5 w-5" />
-              </button>
-              <div className="h-8 w-px bg-border" />
-              <button className="p-2 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
-                <User className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <main className="min-h-[calc(100vh-64px)] flex items-center justify-center p-6 md:p-12">
+      <main className="min-h-[calc(100vh-64px)] flex items-center justify-center p-6 md:p-12 pb-24 lg:pb-12">
         <div className="w-full max-w-2xl">
           {/* Header */}
           <div className="text-center mb-10">
@@ -137,22 +111,20 @@ const EMICalculator = () => {
                     <button
                       type="button"
                       onClick={() => setResidentStatus("uae")}
-                      className={`flex-1 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
-                        residentStatus === "uae"
-                          ? "bg-primary text-primary-foreground"
-                          : "hover:bg-muted text-muted-foreground"
-                      }`}
+                      className={`flex-1 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${residentStatus === "uae"
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted text-muted-foreground"
+                        }`}
                     >
                       UAE Resident
                     </button>
                     <button
                       type="button"
                       onClick={() => setResidentStatus("nri")}
-                      className={`flex-1 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
-                        residentStatus === "nri"
-                          ? "bg-primary text-primary-foreground"
-                          : "hover:bg-muted text-muted-foreground"
-                      }`}
+                      className={`flex-1 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${residentStatus === "nri"
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted text-muted-foreground"
+                        }`}
                     >
                       NRI / International
                     </button>
@@ -180,18 +152,16 @@ const EMICalculator = () => {
                     <button
                       type="button"
                       onClick={() => setCurrency("aed")}
-                      className={`px-4 rounded-xl text-xs font-bold transition-all ${
-                        currency === "aed" ? "bg-muted text-foreground" : "text-muted-foreground"
-                      }`}
+                      className={`px-4 rounded-xl text-xs font-bold transition-all ${currency === "aed" ? "bg-muted text-foreground" : "text-muted-foreground"
+                        }`}
                     >
                       AED
                     </button>
                     <button
                       type="button"
                       onClick={() => setCurrency("inr")}
-                      className={`px-4 rounded-xl text-xs font-bold transition-all ${
-                        currency === "inr" ? "bg-muted text-foreground" : "text-muted-foreground"
-                      }`}
+                      className={`px-4 rounded-xl text-xs font-bold transition-all ${currency === "inr" ? "bg-muted text-foreground" : "text-muted-foreground"
+                        }`}
                     >
                       INR
                     </button>
@@ -263,10 +233,10 @@ const EMICalculator = () => {
             </div>
             <p className="text-xs text-muted-foreground max-w-sm">Predictive modeling based on upcoming Dubai infrastructure projects.</p>
           </div>
-          
+
           <div className="flex-1 w-full relative min-h-[160px]">
             <div className="absolute top-0 right-0 text-right z-10">
-              <p className="text-4xl font-extrabold text-primary tracking-tight leading-none">+32.5%</p>
+              <p className="text-2xl md:text-4xl font-extrabold text-primary tracking-tight leading-none">+32.5%</p>
               <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-1">5-Year Growth Projection</p>
             </div>
 

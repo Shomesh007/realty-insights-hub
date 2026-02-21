@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Diamond, TrendingUp, ArrowRight, PieChart } from "lucide-react";
+import { Diamond, TrendingUp, ArrowRight, PieChart, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import Header from "@/components/layout/Header";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -16,41 +17,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-card font-sans text-foreground antialiased selection:bg-secondary/30">
-      {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full glass-panel-light border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-primary-foreground">
-                <Diamond className="h-4 w-4" />
-              </div>
-              <h2 className="text-foreground text-xl font-bold tracking-tight">LykaRealty</h2>
-            </div>
+      <Header />
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="#market-pulse" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Market Pulse</a>
-              <Link to="/dashboard" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">AI Predictions</Link>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Risk Maps</a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Portfolio</a>
-            </nav>
-
-            {/* Actions */}
-            <div className="flex items-center gap-4">
-              <button className="hidden sm:flex text-sm font-medium text-foreground hover:text-primary">Log In</button>
-              <Button 
-                onClick={() => navigate("/income-analysis")}
-                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold shadow-lg shadow-secondary/20 hover:shadow-secondary/40"
-              >
-                Get Started
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="w-full flex flex-col items-center bg-grid-pattern min-h-screen">
+      <main className="w-full flex flex-col items-center bg-grid-pattern min-h-screen pb-20 md:pb-0">
         {/* Hero Section */}
         <section className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-12 flex flex-col items-center text-center relative">
           {/* Decorative blurred blobs */}
@@ -68,14 +37,15 @@ const Home = () => {
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tighter leading-[1.1]">
-              The Future of <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Dubai Wealth</span>
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground tracking-tighter leading-[1.1]">
+              Lyka Connect: <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Dubai Real Estate AI</span>
             </h1>
 
             <p className="text-lg text-muted-foreground max-w-xl">
-              Harness institutional-grade AI to predict rental yields, capital appreciation, and risk profiles across Dubai's top districts.
+              Harness institutional-grade AI with Lyka Connect (formerly LykaRealty) to predict rental yields, capital appreciation, and ROI across Dubai's premier districts.
             </p>
+
 
             {/* CTA Button */}
             <Button
@@ -115,7 +85,7 @@ const Home = () => {
                   </div>
                   <div className="flex items-center justify-center py-4 relative">
                     {/* Radial Graph */}
-                    <div 
+                    <div
                       className="w-32 h-32 rounded-full flex items-center justify-center relative"
                       style={{ background: 'conic-gradient(hsl(var(--primary)) 0% 75%, hsl(var(--border)) 75% 100%)' }}
                     >
@@ -156,12 +126,22 @@ const Home = () => {
               <div className="md:col-span-5 bg-card rounded-xl p-6 border border-border shadow-sm flex flex-col">
                 <div className="flex flex-col gap-1 mb-6">
                   <h4 className="text-foreground font-bold text-base">Capital Appreciation</h4>
-                  <div className="flex items-end gap-2">
-                    <span className="text-3xl font-bold text-accent">+24%</span>
-                    <span className="text-sm text-muted-foreground mb-1">by 2030</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-end gap-2">
+                      <span className="text-2xl sm:text-3xl font-bold text-accent">+24%</span>
+                      <span className="text-sm text-muted-foreground mb-1">by 2030</span>
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={() => navigate("/capital-appreciation-estimator")}
+                      className="bg-accent/10 hover:bg-accent/20 text-accent font-bold text-[10px] uppercase tracking-wider px-3 h-8 border border-accent/20 transition-all w-full sm:w-auto"
+                    >
+                      AI Estimation
+                    </Button>
                   </div>
                 </div>
                 <div className="flex-1 w-full min-h-[180px] relative">
+
                   <svg className="w-full h-full overflow-visible" viewBox="0 0 400 200">
                     <defs>
                       <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
@@ -238,24 +218,35 @@ const Home = () => {
           {/* Stats Bar */}
           <div className="mt-12 w-full grid grid-cols-2 md:grid-cols-4 gap-8 opacity-70">
             <div className="flex flex-col items-center">
-              <span className="text-3xl font-bold text-foreground">15k+</span>
+              <span className="text-2xl md:text-3xl font-bold text-foreground">15k+</span>
               <span className="text-xs uppercase tracking-widest text-muted-foreground mt-1">Properties Analyzed</span>
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-3xl font-bold text-foreground">$2.4B</span>
+              <span className="text-2xl md:text-3xl font-bold text-foreground">$2.4B</span>
               <span className="text-xs uppercase tracking-widest text-muted-foreground mt-1">Transaction Data</span>
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-3xl font-bold text-foreground">98%</span>
+              <span className="text-2xl md:text-3xl font-bold text-foreground">98%</span>
               <span className="text-xs uppercase tracking-widest text-muted-foreground mt-1">Forecast Accuracy</span>
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-3xl font-bold text-foreground">24/7</span>
+              <span className="text-2xl md:text-3xl font-bold text-foreground">24/7</span>
               <span className="text-xs uppercase tracking-widest text-muted-foreground mt-1">AI Monitoring</span>
             </div>
           </div>
         </section>
       </main>
+
+      {/* Hidden SEO Metadata */}
+      <div className="sr-only">
+        <h2>Lyka Connect (LykaConnect)</h2>
+        <h3>Lyka Realty (LykaRealty)</h3>
+        <p>
+          Invest in Dubai Real Estate with our AI-powered insights. We provide precision data for Dubai Marina, Downtown Dubai, Business Bay, and Dubai South.
+          Predict rental yields, ROI, and capital appreciation for off-plan and ready properties.
+          Tamil investors' guide to UAE Golden Visa and property investment strategies.
+        </p>
+      </div>
     </div>
   );
 };
